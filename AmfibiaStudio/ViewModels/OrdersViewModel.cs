@@ -73,7 +73,7 @@ public class OrdersViewModel : PageViewModel
         allRows = context.State.Orders.OrderByDescending(o => o.Created).Select(o => new OrderRow(o, context)).ToList();
         Couriers = context.State.Users.Where(u => u.Role == "courier").Select(u => new Option(u.Email, u.FullName)).ToList();
 
-        AdvanceCommand = new RelayCommand(Advance, () => NextStatus != null && CanDo(NextStatus));
+        AdvanceCommand = new RelayCommand(() => Advance(), () => NextStatus != null && CanDo(NextStatus));
         CancelCommand = new RelayCommand(Cancel, () => Selected != null && CanCancel(Selected.Order) && Context.IsRole("owner", "support"));
         MarkPaidCommand = new RelayCommand(MarkPaid, () => Selected is { Order.Paid: false } s && s.Order.Status is not ("cancelled" or "returned") && Context.IsRole("owner", "support", "courier"));
         AssignCourierCommand = new RelayCommand(AssignCourier, () => Selected != null && CourierEmail != null && Context.IsRole("owner", "warehouse"));

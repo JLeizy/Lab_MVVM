@@ -7,7 +7,7 @@ namespace AmfibiaStudio.ViewModels.Base;
 /// Страница панели. Окно показывает её через DataTemplate:
 /// WPF сам находит Вид (UserControl) по типу ViewModel — это и есть «навигация по данным» в MVVM.
 /// </summary>
-public abstract class PageViewModel : ObservableObject, IDisposable
+public abstract class PageViewModel : ValidatableObject, IDisposable
 {
     protected PageViewModel(StudioContext context)
     {

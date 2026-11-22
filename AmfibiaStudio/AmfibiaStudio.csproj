@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>AmfibiaStudio</RootNamespace>
+    <AssemblyName>AmfibiaStudio</AssemblyName>
+    <Product>AMFIBIA Studio — панель управления (ЛР, MVVM)</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Данные сайта AMFIBIA и статьи об истории брендов встраиваются в программу -->
+    <None Remove="Data\*.json" />
+    <EmbeddedResource Include="Data\amfibia.json" LogicalName="amfibia.json" />
+    <EmbeddedResource Include="Data\amfibia-history.json" LogicalName="amfibia-history.json" />
+
+    <!-- Шрифты сайта (лицензия SIL OFL, тексты лицензий лежат рядом) -->
+    <None Remove="Fonts\*.ttf" />
+    <Resource Include="Fonts\*.ttf" />
+  </ItemGroup>
+
+</Project>

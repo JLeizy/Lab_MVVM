@@ -35,7 +35,7 @@ public class StockRowViewModel : ObservableObject
 /// ViewModel склада: остатки по складам Минск / Москва / Алматы, приход товара и перемещение
 /// между складами. Количество проверяется при вводе.
 /// </summary>
-public class WarehouseViewModel : ValidatablePage
+public class WarehouseViewModel : PageViewModel
 {
     public const int LowStock = 2;
 
