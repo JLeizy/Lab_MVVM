@@ -1,0 +1,57 @@
+﻿<Window x:Class="AmfibiaStudio.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="AMFIBIA Studio — панель управления магазином" Width="1440" Height="900" MinWidth="1180" MinHeight="680"
+        WindowStartupLocation="CenterScreen" Background="{DynamicResource Bg}" FontFamily="{StaticResource FontBody}"
+        UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" AutomationProperties.AutomationId="StudioWindow">
+    <Grid>
+        <!-- Текущий экран: LoginViewModel → LoginView, ShellViewModel → ShellView (см. DataTemplate в App.xaml) -->
+        <ContentControl Content="{Binding CurrentView}" Focusable="False"/>
+
+        <!-- Уведомления: коллекция Toasts в ViewModel, Вид только показывает их -->
+        <ItemsControl ItemsSource="{Binding Notifier.Toasts}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                      Margin="0,0,28,24" Width="380" Focusable="False" AutomationProperties.AutomationId="Toasts">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="{DynamicResource Surface3}" BorderBrush="{DynamicResource LineStrong}" BorderThickness="1"
+                            CornerRadius="6" Margin="0,8,0,0" Padding="0">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="18" ShadowDepth="3" Opacity="0.35" Color="Black"/>
+                        </Border.Effect>
+                        <Border.RenderTransform>
+                            <TranslateTransform/>
+                        </Border.RenderTransform>
+                        <Border.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.X" From="40" To="0" Duration="0:0:0.25">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Border.Triggers>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="Bar" CornerRadius="6,0,0,6" Background="{DynamicResource Success}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Message}" Margin="14,12" TextWrapping="Wrap" FontSize="13"
+                                       Foreground="{DynamicResource Text}"/>
+                        </Grid>
+                    </Border>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsError}" Value="True">
+                            <Setter TargetName="Bar" Property="Background" Value="{DynamicResource Error}"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Window>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using AmfibiaStudio.Models;
@@ -29,6 +29,12 @@ public class OrderRow : ObservableObject
     public string Delivery => context.Data.Delivery.FirstOrDefault(d => d.Code == Order.Delivery)?.Name ?? Order.Delivery;
     public string Paid => Order.Paid ? "оплачен" : "не оплачен";
     public int ItemsCount => Order.ItemsCount;
+    public string Phone => Order.Phone;
+    public string Email => Order.User;
+    public string Tracking => Order.Tracking;
+    public string SubtotalText => Fmt.Money(Order.Subtotal);
+    public string DiscountText => Order.Discount > 0 ? $"−{Fmt.Money(Order.Discount)}{(Order.Promo != null ? $" ({Order.Promo})" : "")}" : "—";
+    public string DeliveryPriceText => Order.DeliveryPrice == 0 ? "бесплатно" : Fmt.Money(Order.DeliveryPrice);
 
     public void Refresh() => OnPropertyChanged(string.Empty);
 }

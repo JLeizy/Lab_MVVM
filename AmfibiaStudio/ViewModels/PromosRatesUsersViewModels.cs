@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -73,6 +73,8 @@ public class PromosViewModel : PageViewModel
                 isNew = false;
                 Fill(value.Promo);
             }
+
+            RefreshCommands();
         }
     }
 
@@ -124,6 +126,13 @@ public class PromosViewModel : PageViewModel
         active = true;
         OnPropertyChanged(string.Empty);
         Validate();
+        RefreshCommands();
+    }
+
+    private void RefreshCommands()
+    {
+        SaveCommand?.RaiseCanExecuteChanged();
+        DeleteCommand?.RaiseCanExecuteChanged();
     }
 
     /// <summary>Правила проверки промокода.</summary>
@@ -174,6 +183,7 @@ public class PromosViewModel : PageViewModel
         OnPropertyChanged(nameof(Selected));
         OnPropertyChanged(nameof(Subtitle));
         OnPropertyChanged(nameof(EditorTitle));
+        RefreshCommands();
         Notify($"Промокод {target.Code} сохранён.");
     }
 

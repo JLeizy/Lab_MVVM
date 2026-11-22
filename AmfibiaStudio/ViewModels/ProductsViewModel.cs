@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -267,9 +267,10 @@ public class ProductEditorViewModel : ValidatableObject
     public string PriceText { get => priceText; set => Edit(ref priceText, value); }
     public string OldPriceText { get => oldPriceText; set => Edit(ref oldPriceText, value); }
     public string Description { get => description; set => Edit(ref description, value); }
-    public string BrandSlug { get => brandSlug; set => Edit(ref brandSlug, value); }
-    public string CategorySlug { get => categorySlug; set => Edit(ref categorySlug, value); }
-    public string ColorCode { get => colorCode; set => Edit(ref colorCode, value); }
+    // Выпадающий список при смене DataContext может на миг передать null — такие значения пропускаются
+    public string BrandSlug { get => brandSlug; set { if (value != null) Edit(ref brandSlug, value); } }
+    public string CategorySlug { get => categorySlug; set { if (value != null) Edit(ref categorySlug, value); } }
+    public string ColorCode { get => colorCode; set { if (value != null) Edit(ref colorCode, value); } }
     public bool IsNewArrival { get => isNewArrival; set => Edit(ref isNewArrival, value); }
     public bool Iconic { get => iconic; set => Edit(ref iconic, value); }
     public bool Preowned { get => preowned; set => Edit(ref preowned, value); }

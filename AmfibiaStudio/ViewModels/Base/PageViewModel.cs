@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using AmfibiaStudio.Services;
 
 namespace AmfibiaStudio.ViewModels.Base;

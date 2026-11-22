@@ -1,0 +1,36 @@
+﻿<Application x:Class="AmfibiaStudio.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:AmfibiaStudio.ViewModels"
+             xmlns:views="clr-namespace:AmfibiaStudio.Views"
+             xmlns:pages="clr-namespace:AmfibiaStudio.Views.Pages"
+             ShutdownMode="OnMainWindowClose">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- [0] — цвета темы. ThemeService заменяет этот словарь при смене темы -->
+                <ResourceDictionary Source="Themes/Colors.Amfibia.xaml"/>
+                <ResourceDictionary Source="Themes/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--
+                НАВИГАЦИЯ В MVVM: окно показывает ViewModel в ContentControl,
+                а WPF сам выбирает Вид по типу ViewModel с помощью этих шаблонов.
+                ViewModel не знает о Видах, Виды получают ViewModel через DataContext.
+            -->
+            <DataTemplate DataType="{x:Type vm:LoginViewModel}"><views:LoginView/></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ShellViewModel}"><views:ShellView/></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:DashboardViewModel}"><pages:DashboardView/></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ProductsViewModel}"><pages:ProductsView/></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:OrdersViewModel}"><pages:OrdersView/></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:WarehouseViewModel}"><pages:WarehouseView/></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ReviewsViewModel}"><pages:ReviewsView/></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:PromosViewModel}"><pages:PromosView/></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:RatesViewModel}"><pages:RatesView/></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:UsersViewModel}"><pages:UsersView/></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:BrandsViewModel}"><pages:BrandsView/></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:AuditViewModel}"><pages:AuditView/></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:SettingsViewModel}"><pages:SettingsView/></DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

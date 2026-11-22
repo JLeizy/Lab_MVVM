@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="AmfibiaStudio.Views.Pages.RatesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="0,0,8,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="18"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel>
+                <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="КУРСЫ К БЕЛОРУССКОМУ РУБЛЮ" Style="{StaticResource T.Eyebrow}"/>
+                        <TextBlock Text="Сколько рублей стоит 1 единица валюты" Style="{StaticResource T.Muted}" Margin="0,4,0,20"/>
+                        <TextBlock Text="Только просмотр: курсы меняет владелец магазина." Style="{StaticResource T.Muted}" Margin="0,0,0,14"
+                                   Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"/>
+
+                        <Grid IsEnabled="{Binding CanEdit}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="$ 1 USD =" FontFamily="{StaticResource FontDisplay}" FontSize="22" Foreground="{DynamicResource Text}" Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding UsdText, UpdateSourceTrigger=PropertyChanged}" FontSize="22" FontFamily="{StaticResource FontMedium}"
+                                         Margin="0,0,0,30" AutomationProperties.AutomationId="UsdRate"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="€ 1 EUR =" FontFamily="{StaticResource FontDisplay}" FontSize="22" Foreground="{DynamicResource Text}" Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding EurText, UpdateSourceTrigger=PropertyChanged}" FontSize="22" FontFamily="{StaticResource FontMedium}"
+                                         Margin="0,0,0,30" AutomationProperties.AutomationId="EurRate"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <WrapPanel>
+                            <Button Content="Сохранить курсы" Style="{StaticResource Btn.Primary}" Command="{Binding SaveCommand}" Margin="0,0,10,10"
+                                    AutomationProperties.AutomationId="SaveRates"/>
+                            <!-- Асинхронная команда: пока идёт загрузка, кнопка недоступна, окно не зависает -->
+                            <Button Style="{StaticResource Btn.Ghost}" Command="{Binding LoadCommand}" Margin="0,0,10,10" AutomationProperties.AutomationId="LoadNbrb">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="⟳ " Visibility="{Binding LoadCommand.IsRunning, Converter={StaticResource BoolToVisibility}}"/>
+                                    <TextBlock Text="Загрузить официальные курсы НБРБ"/>
+                                </StackPanel>
+                            </Button>
+                        </WrapPanel>
+                        <ProgressBar IsIndeterminate="True" Height="3" Foreground="{DynamicResource Accent}" Background="Transparent" BorderThickness="0"
+                                     Visibility="{Binding LoadCommand.IsRunning, Converter={StaticResource BoolToVisibility}}" Margin="0,4,0,8"/>
+                        <TextBlock Text="{Binding Status}" Style="{StaticResource T.Muted}" Visibility="{Binding Status, Converter={StaticResource EmptyToCollapsed}}"
+                                   AutomationProperties.AutomationId="RatesStatus"/>
+                        <TextBlock Style="{StaticResource T.Muted}" FontSize="11" Margin="0,10,0,0" Text="Источник: api.nbrb.by/exrates/rates — официальные курсы Национального банка Республики Беларусь."/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="ПЕРЕСЧЁТ ЦЕН" Style="{StaticResource T.Eyebrow}"/>
+                        <TextBlock Text="Пересчитывается сразу при вводе курса" Style="{StaticResource T.Muted}" Margin="0,4,0,14"/>
+                        <ItemsControl ItemsSource="{Binding Preview}" Focusable="False" AutomationProperties.AutomationId="RatesPreview">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1" Padding="0,9">
+                                        <TextBlock Text="{Binding}" FontSize="13" Foreground="{DynamicResource TextSoft}" TextWrapping="Wrap"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <Border Grid.Column="2" Style="{StaticResource Card}" VerticalAlignment="Top">
+                <StackPanel>
+                    <TextBlock Text="ИСТОРИЯ ИЗМЕНЕНИЙ" Style="{StaticResource T.Eyebrow}" Margin="0,0,0,14"/>
+                    <TextBlock Text="Курсы ещё не менялись." Style="{StaticResource T.Muted}"
+                               Visibility="{Binding History, Converter={StaticResource EmptyToCollapsed}, ConverterParameter=invert}"/>
+                    <ItemsControl ItemsSource="{Binding History}" Focusable="False">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1" Padding="0,10">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Details}" FontSize="13" Foreground="{DynamicResource Text}" TextWrapping="Wrap"/>
+                                        <TextBlock FontSize="11" Foreground="{DynamicResource Muted}" Margin="0,3,0,0">
+                                            <Run Text="{Binding At, StringFormat=dd.MM.yyyy HH:mm, Mode=OneWay}"/> <Run Text="·"/> <Run Text="{Binding User, Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

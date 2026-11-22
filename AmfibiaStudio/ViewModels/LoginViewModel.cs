@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -42,7 +42,18 @@ public class LoginViewModel : ValidatableObject
             .GroupBy(u => u.Role).Select(g => g.First())
             .Select(u => new StaffAccount(u.Email, u.FullName, u.RoleName))
             .ToList();
+
+        // Витрина на экране входа: культовые вещи разных домов
+        Showcase = context.State.Products.Where(p => p.Iconic && !p.Preowned)
+            .OrderByDescending(p => p.Views).GroupBy(p => p.BrandSlug).Select(g => g.First())
+            .Take(3).ToList();
+        Stats = $"{context.Data.Brands.Count} модных домов · {context.State.Products.Count} вещей · {context.State.Orders.Count} заказов";
     }
+
+    /// <summary>Вещи для оформления экрана входа.</summary>
+    public IReadOnlyList<Product> Showcase { get; }
+
+    public string Stats { get; }
 
     public event EventHandler? LoggedIn;
 

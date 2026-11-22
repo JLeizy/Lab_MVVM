@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -44,7 +44,7 @@ public class DashboardViewModel : PageViewModel
 
     public DashboardViewModel(StudioContext context, Action<string>? navigate = null, Func<DateTime>? clock = null) : base(context)
     {
-        this.clock = clock ?? (() => DateTime.Now);
+        this.clock = clock ?? (() => DemoNow(context));
         OpenCommand = new RelayCommand(p => { if (p is string key) navigate?.Invoke(key); });
         context.Changed += OnChanged;
         Recalculate();
@@ -77,6 +77,18 @@ public class DashboardViewModel : PageViewModel
 
     public decimal Revenue { get; private set; }
     public int OrdersCount { get; private set; }
+
+    /// <summary>
+    /// «Сейчас» для отчёта. Если последние заказы демо-данных давно в прошлом,
+    /// отчёт строится на дату последнего заказа, чтобы графики не были пустыми.
+    /// </summary>
+    private static DateTime DemoNow(StudioContext context)
+    {
+        DateTime now = DateTime.Now;
+        if (context.State.Orders.Count == 0) return now;
+        DateTime last = context.State.Orders.Max(o => o.Created);
+        return last > now || (now - last).TotalDays > 7 ? last : now;
+    }
 
     private int FlowIndex(string status)
     {
