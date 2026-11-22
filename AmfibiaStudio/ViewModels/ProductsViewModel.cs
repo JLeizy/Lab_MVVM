@@ -9,7 +9,11 @@ using AmfibiaStudio.ViewModels.Base;
 namespace AmfibiaStudio.ViewModels;
 
 /// <summary>Вариант выбора в выпадающем списке.</summary>
-public record Option(string Key, string Title);
+public record Option(string Key, string Title)
+{
+    /// <summary>Так вариант называется в выпадающем списке и для экранных дикторов.</summary>
+    public override string ToString() => Title;
+}
 
 /// <summary>Строка таблицы товаров (обёртка над моделью Product).</summary>
 public class ProductRow : ObservableObject
@@ -149,6 +153,18 @@ public class ProductsViewModel : PageViewModel
             var row = new ProductRow(product, Context);
             allRows.Insert(0, row);
             ApplyFilter();
+            if (!Items.Contains(row))
+            {
+                // Новый товар не подходит под фильтры — сбрасываем их, чтобы он был виден и выбран
+                search = string.Empty; brand = All; group = All; onlyPreowned = onlySale = onlyLowStock = false;
+                foreach (string name in new[] { nameof(Search), nameof(Brand), nameof(Group), nameof(OnlyPreowned), nameof(OnlySale), nameof(OnlyLowStock) })
+                {
+                    OnPropertyChanged(name);
+                }
+
+                ApplyFilter();
+            }
+
             Selected = Items.FirstOrDefault(r => r.Product == product);
             OnPropertyChanged(nameof(Subtitle));
         }

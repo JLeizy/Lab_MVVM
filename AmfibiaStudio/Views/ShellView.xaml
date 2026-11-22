@@ -23,8 +23,12 @@
                 </StackPanel>
 
                 <!-- Выбор пункта меняет SelectedItem во ViewModel, а она открывает страницу -->
-                <ListBox Grid.Row="1" ItemsSource="{Binding NavItems}" SelectedItem="{Binding SelectedItem}"
-                         ItemContainerStyle="{StaticResource Item.Nav}" AutomationProperties.AutomationId="NavList">
+                <ListBox Grid.Row="1" ItemsSource="{Binding NavItems}" SelectedItem="{Binding SelectedItem}" AutomationProperties.AutomationId="NavList">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource Item.Nav}">
+                            <Setter Property="AutomationProperties.Name" Value="{Binding Title}"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid AutomationProperties.Name="{Binding Title}">

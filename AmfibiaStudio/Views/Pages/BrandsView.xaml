@@ -4,6 +4,7 @@
     <UserControl.Resources>
         <!-- Плитка бренда в списке слева: фон — градиент палитры бренда, название — шрифтом бренда -->
         <Style x:Key="BrandItem" TargetType="ListBoxItem">
+            <Setter Property="AutomationProperties.Name" Value="{Binding Name}"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="Template">

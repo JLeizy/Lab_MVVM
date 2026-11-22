@@ -51,8 +51,9 @@ public class WarehouseViewModel : PageViewModel
     {
         Warehouses = context.Data.Warehouses.Select(w => w.City).ToList();
         allRows = context.State.Products.Select(p => new StockRowViewModel(p, context.StockOf(p.Id))).ToList();
-        TransferCommand = new RelayCommand(Transfer, () => Selected != null && !HasErrors);
-        ReceiveCommand = new RelayCommand(Receive, () => Selected != null && !HasErrors);
+        // У каждой формы свои поля: ошибка в перемещении не мешает приходу и наоборот
+        TransferCommand = new RelayCommand(Transfer, () => Selected != null && FirstError(nameof(QuantityText)) == null);
+        ReceiveCommand = new RelayCommand(Receive, () => Selected != null && FirstError(nameof(ReceiveText)) == null);
         ApplyFilter();
         Selected = Items.FirstOrDefault(r => r.IsLow) ?? Items.FirstOrDefault();
         Validate();

@@ -24,8 +24,7 @@
                         <Border Style="{StaticResource Card}" Margin="0,0,14,14" Padding="20,16">
                             <StackPanel>
                                 <TextBlock Text="{Binding Title}" Style="{StaticResource T.Label}"/>
-                                <TextBlock Text="{Binding Value}" FontFamily="{StaticResource FontDisplay}" FontSize="30" Foreground="{DynamicResource Text}"
-                                           AutomationProperties.Name="{Binding Title}"/>
+                                <TextBlock Text="{Binding Value}" FontFamily="{StaticResource FontDisplay}" FontSize="30" Foreground="{DynamicResource Text}"/>
                                 <TextBlock Text="{Binding Hint}" Style="{StaticResource T.Muted}" Margin="0,2,0,0"/>
                             </StackPanel>
                         </Border>

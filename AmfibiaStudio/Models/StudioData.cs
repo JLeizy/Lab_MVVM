@@ -93,11 +93,54 @@ public class StudioData
         Rates = Rates,
         Users = Users,
         Reviews = Reviews,
-        Audit = new List<AuditEntry>
-        {
-            new() { At = Rates.Updated, User = "Александра Вершинина", Action = "Курсы валют", Details = "USD 3,2051 · EUR 3,4722" }
-        }
+        Audit = CreateDemoAudit()
     };
+
+    /// <summary>
+    /// Журнал для демо-данных: кто из сотрудников провёл заказы по статусам и проверил отзывы
+    /// (по ролям, как на сайте: подтверждает поддержка, собирает склад, доставляет курьер).
+    /// </summary>
+    private List<AuditEntry> CreateDemoAudit()
+    {
+        string NameOf(string role, int index)
+        {
+            List<User> staff = Users.Where(u => u.Role == role && !u.Blocked).ToList();
+            return staff.Count == 0 ? "Система" : staff[index % staff.Count].FullName;
+        }
+
+        var audit = new List<AuditEntry>
+        {
+            new() { At = Rates.Updated, User = NameOf("owner", 0), Action = "Курсы валют", Details = $"USD {Rates.USD:0.0000} · EUR {Rates.EUR:0.0000} (НБРБ)" }
+        };
+
+        int i = 0;
+        foreach (Order order in Orders)
+        {
+            foreach (StatusChange change in order.History.Where(h => h.Status != "created"))
+            {
+                string role = change.Status switch
+                {
+                    "assembling" or "assembled" or "handed_to_delivery" => "warehouse",
+                    "in_transit" or "arrived" or "delivered" => "courier",
+                    _ => "support"
+                };
+                string action = change.Status == "cancelled" ? "Заказ отменён" : "Статус заказа";
+                audit.Add(new AuditEntry { At = change.At, User = NameOf(role, i++), Action = action, Details = $"{order.Number} → {StatusName(change.Status)}" });
+            }
+        }
+
+        foreach (Review review in Reviews.Where(r => r.Status != "pending"))
+        {
+            audit.Add(new AuditEntry
+            {
+                At = review.Created.AddHours(5), User = NameOf("moderator", 0),
+                Action = review.Status == "approved" ? "Отзыв опубликован" : "Отзыв отклонён",
+                Details = $"{review.Author} · {Products.FirstOrDefault(p => p.Id == review.Product)?.Name ?? review.Product} · {new string('★', review.Rating)}"
+            });
+        }
+
+        return audit.OrderByDescending(a => a.At).ToList();
+    }
 
     /// <summary>Связывает товары с брендами и силуэтами (для рисунков товаров).</summary>
     public void Link(IEnumerable<Product> products)
