@@ -83,7 +83,7 @@
                                     <StackPanel>
                                         <TextBlock Text="{Binding Details}" FontSize="13" Foreground="{DynamicResource Text}" TextWrapping="Wrap"/>
                                         <TextBlock FontSize="11" Foreground="{DynamicResource Muted}" Margin="0,3,0,0">
-                                            <Run Text="{Binding At, StringFormat=dd.MM.yyyy HH:mm, Mode=OneWay}"/> <Run Text="·"/> <Run Text="{Binding User, Mode=OneWay}"/>
+                                            <Run Text="{Binding At, StringFormat='dd.MM.yyyy HH:mm', Mode=OneWay}"/> <Run Text="·"/> <Run Text="{Binding User, Mode=OneWay}"/>
                                         </TextBlock>
                                     </StackPanel>
                                 </Border>

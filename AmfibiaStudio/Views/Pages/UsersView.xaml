@@ -87,7 +87,7 @@
                             <TextBlock Grid.Row="2" Text="Город" Style="{StaticResource T.Muted}" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Selected.City}" FontSize="13" Foreground="{DynamicResource Text}"/>
                             <TextBlock Grid.Row="3" Text="С нами с" Style="{StaticResource T.Muted}" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Selected.User.Registered, StringFormat=dd.MM.yyyy}" FontSize="13" Foreground="{DynamicResource Text}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Selected.User.Registered, StringFormat='dd.MM.yyyy'}" FontSize="13" Foreground="{DynamicResource Text}"/>
                             <TextBlock Grid.Row="4" Text="Статус" Style="{StaticResource T.Muted}"/>
                             <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Selected.State}" FontSize="13" Foreground="{DynamicResource Text}"
                                        AutomationProperties.AutomationId="UserCardState"/>

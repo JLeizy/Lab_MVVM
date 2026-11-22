@@ -26,6 +26,9 @@ public class Notifier : ObservableObject
 {
     private readonly SynchronizationContext? ui = SynchronizationContext.Current;
 
+    // Ссылки на таймеры, пока они не сработали (иначе сборщик мусора может удалить таймер раньше)
+    private readonly HashSet<Timer> timers = new();
+
     public ObservableCollection<ToastViewModel> Toasts { get; } = new();
 
     public string LastMessage { get; private set; } = string.Empty;
@@ -43,8 +46,13 @@ public class Notifier : ObservableObject
 
         if (ui != null)
         {
-            var timer = new Timer(_ => ui.Post(__ => Toasts.Remove(toast), null), null, 4000, Timeout.Infinite);
-            GC.KeepAlive(timer);
+            Timer? timer = null;
+            timer = new Timer(_ => ui.Post(__ =>
+            {
+                Toasts.Remove(toast);
+                if (timer != null && timers.Remove(timer)) timer.Dispose();
+            }, null), null, 4000, Timeout.Infinite);
+            timers.Add(timer);
         }
     }
 }

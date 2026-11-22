@@ -12,7 +12,7 @@ public static class PasswordBoxAssistant
 {
     public static readonly DependencyProperty BoundPasswordProperty = DependencyProperty.RegisterAttached(
         "BoundPassword", typeof(string), typeof(PasswordBoxAssistant),
-        new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnBoundPasswordChanged));
+        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnBoundPasswordChanged));
 
     private static readonly DependencyProperty IsUpdatingProperty = DependencyProperty.RegisterAttached(
         "IsUpdating", typeof(bool), typeof(PasswordBoxAssistant));
@@ -20,7 +20,7 @@ public static class PasswordBoxAssistant
     private static readonly DependencyProperty IsAttachedProperty = DependencyProperty.RegisterAttached(
         "IsAttached", typeof(bool), typeof(PasswordBoxAssistant));
 
-    public static string GetBoundPassword(DependencyObject d) => (string)d.GetValue(BoundPasswordProperty);
+    public static string GetBoundPassword(DependencyObject d) => (string?)d.GetValue(BoundPasswordProperty) ?? string.Empty;
 
     public static void SetBoundPassword(DependencyObject d, string value) => d.SetValue(BoundPasswordProperty, value);
 
@@ -34,10 +34,12 @@ public static class PasswordBoxAssistant
             box.PasswordChanged += OnPasswordChanged;
         }
 
-        // ViewModel поменяла пароль (например, кнопка демо-аккаунта) — показать его в поле
-        if (!(bool)box.GetValue(IsUpdatingProperty))
+        // ViewModel поменяла пароль (например, кнопка демо-аккаунта) — показать его в поле.
+        // Значение по умолчанию — null, поэтому первая привязка (пустая строка) тоже сюда попадает и подключает обработчик.
+        string value = e.NewValue as string ?? string.Empty;
+        if (!(bool)box.GetValue(IsUpdatingProperty) && box.Password != value)
         {
-            box.Password = e.NewValue as string ?? string.Empty;
+            box.Password = value;
         }
     }
 

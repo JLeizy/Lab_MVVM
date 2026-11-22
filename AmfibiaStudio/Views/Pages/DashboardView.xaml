@@ -201,7 +201,7 @@
                                             </TextBlock>
                                             <TextBlock Text="{Binding Details}" FontSize="12" Foreground="{DynamicResource TextSoft}" TextTrimming="CharacterEllipsis"/>
                                             <TextBlock FontSize="11" Foreground="{DynamicResource Muted}">
-                                                <Run Text="{Binding At, StringFormat=dd.MM.yyyy HH:mm, Mode=OneWay}"/> <Run Text="·"/> <Run Text="{Binding User, Mode=OneWay}"/>
+                                                <Run Text="{Binding At, StringFormat='dd.MM.yyyy HH:mm', Mode=OneWay}"/> <Run Text="·"/> <Run Text="{Binding User, Mode=OneWay}"/>
                                             </TextBlock>
                                         </StackPanel>
                                     </Grid>
