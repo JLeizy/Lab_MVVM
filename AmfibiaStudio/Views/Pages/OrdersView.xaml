@@ -6,7 +6,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="18"/>
-            <ColumnDefinition Width="420"/>
+            <ColumnDefinition Width="390"/>
         </Grid.ColumnDefinitions>
 
         <!-- ===== Список заказов ===== -->
@@ -29,7 +29,7 @@
                 <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding Selected}" VirtualizingPanel.ScrollUnit="Pixel"
                           AutomationProperties.AutomationId="OrdersGrid">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="НОМЕР" Binding="{Binding Number}" Width="128">
+                        <DataGridTextColumn Header="НОМЕР" Binding="{Binding Number}" Width="150">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Foreground" Value="{DynamicResource Text}"/>
@@ -37,10 +37,10 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Header="ДАТА" Binding="{Binding Date}" Width="118" SortMemberPath="Order.Created"/>
+                        <DataGridTextColumn Header="ДАТА" Binding="{Binding Date}" Width="128" SortMemberPath="Order.Created"/>
                         <DataGridTextColumn Header="ПОКУПАТЕЛЬ" Binding="{Binding Customer}" Width="*"/>
-                        <DataGridTextColumn Header="СУММА" Binding="{Binding Total}" Width="100" SortMemberPath="Order.Total"/>
-                        <DataGridTemplateColumn Header="СТАТУС" Width="150" SortMemberPath="Status">
+                        <DataGridTextColumn Header="СУММА" Binding="{Binding Total}" Width="96" SortMemberPath="Order.Total"/>
+                        <DataGridTemplateColumn Header="СТАТУС" Width="146" SortMemberPath="Status">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border Style="{StaticResource StatusPill}">

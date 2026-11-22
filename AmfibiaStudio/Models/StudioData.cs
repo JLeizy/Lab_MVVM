@@ -110,7 +110,7 @@ public class StudioData
 
         var audit = new List<AuditEntry>
         {
-            new() { At = Rates.Updated, User = NameOf("owner", 0), Action = "Курсы валют", Details = $"USD {Rates.USD:0.0000} · EUR {Rates.EUR:0.0000} (НБРБ)" }
+            new() { At = Rates.Updated, User = NameOf("owner", 0), Action = "Курсы валют", Details = string.Format(System.Globalization.CultureInfo.GetCultureInfo("ru-RU"), "USD {0:0.0000} · EUR {1:0.0000} (НБРБ)", Rates.USD, Rates.EUR) }
         };
 
         int i = 0;

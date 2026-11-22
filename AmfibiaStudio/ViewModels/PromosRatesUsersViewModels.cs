@@ -238,7 +238,7 @@ public class RatesViewModel : PageViewModel
         {
             if (!TryRate(usdText, out decimal usd) || !TryRate(eurText, out decimal eur)) return new[] { "Введите курсы, чтобы увидеть пересчёт цен." };
             return Context.State.Products.Where(p => p.Iconic).OrderByDescending(p => p.Views).Take(4)
-                .Select(p => $"{p.Brand} — {p.Name}: {Fmt.Money(p.Price)} = ${p.Price / usd:N2} = €{p.Price / eur:N2}").ToList();
+                .Select(p => $"{p.Brand} — {p.Name}: {Fmt.Money(p.Price)} = ${(p.Price / usd).ToString("N2", Fmt.Ru)} = €{(p.Price / eur).ToString("N2", Fmt.Ru)}").ToList();
         }
     }
 
@@ -266,7 +266,7 @@ public class RatesViewModel : PageViewModel
     private void Apply(decimal usd, decimal eur, DateTime date, string source)
     {
         CurrencyRates rates = Context.State.Rates;
-        string details = $"USD {rates.USD:0.0000} → {usd:0.0000} · EUR {rates.EUR:0.0000} → {eur:0.0000} ({source})";
+        string details = string.Format(Fmt.Ru, "USD {0:0.0000} → {1:0.0000} · EUR {2:0.0000} → {3:0.0000} ({4})", rates.USD, usd, rates.EUR, eur, source);
         rates.USD = usd;
         rates.EUR = eur;
         rates.Updated = date;
@@ -274,7 +274,7 @@ public class RatesViewModel : PageViewModel
         usdText = usd.ToString("0.0000", Fmt.Ru);
         eurText = eur.ToString("0.0000", Fmt.Ru);
         OnPropertyChanged(string.Empty);
-        Notify($"Курсы обновлены: USD {usd:0.0000}, EUR {eur:0.0000}.");
+        Notify(string.Format(Fmt.Ru, "Курсы обновлены: USD {0:0.0000}, EUR {1:0.0000}.", usd, eur));
     }
 
     public async Task LoadFromNbrbAsync()

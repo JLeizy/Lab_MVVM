@@ -32,13 +32,6 @@
                 <CheckBox Content="Со скидкой" IsChecked="{Binding OnlySale}" Margin="0,0,18,0"/>
                 <CheckBox Content="Мало на складе" IsChecked="{Binding OnlyLowStock}" Margin="0,0,18,0" AutomationProperties.AutomationId="ProductsLowStock"/>
                 <Button Content="Сбросить" Style="{StaticResource Btn.Link}" Command="{Binding ResetFiltersCommand}" FontSize="12"/>
-
-                <Button DockPanel.Dock="Right" Content="Удалить" Style="{StaticResource Btn.Danger}" Padding="12,6" FontSize="12"
-                        Command="{Binding DeleteCommand}" AutomationProperties.AutomationId="DeleteProduct"/>
-                <Button DockPanel.Dock="Right" Content="Копия" Style="{StaticResource Btn.Small}" Margin="0,0,8,0"
-                        Command="{Binding DuplicateCommand}" AutomationProperties.AutomationId="DuplicateProduct"/>
-                <Button DockPanel.Dock="Right" Content="+ Новый товар" Style="{StaticResource Btn.Primary}" Padding="12,6" FontSize="12" Margin="0,0,8,0"
-                        Command="{Binding NewCommand}" AutomationProperties.AutomationId="NewProduct"/>
             </DockPanel>
 
             <Border Grid.Row="2" Style="{StaticResource Card}" Padding="8,14,8,4">
@@ -60,7 +53,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="АРТИКУЛ" Binding="{Binding Id}" Width="118"/>
+                            <DataGridTextColumn Header="АРТИКУЛ" Binding="{Binding Id}" Width="126"/>
                             <DataGridTemplateColumn Header="НАЗВАНИЕ" Width="*" SortMemberPath="Name">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -106,8 +99,21 @@
             </Border>
         </Grid>
 
-        <!-- ===== Карточка редактирования (ProductEditorViewModel) ===== -->
-        <Border Grid.Column="2" Style="{StaticResource Card}" Padding="0">
+        <!-- ===== Действия и карточка редактирования (ProductEditorViewModel) ===== -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <UniformGrid Columns="3" Margin="0,0,0,12">
+                <Button Content="+ Новый товар" Style="{StaticResource Btn.Primary}" Padding="10,10" FontSize="12" Margin="0,0,6,0"
+                        Command="{Binding NewCommand}" AutomationProperties.AutomationId="NewProduct"/>
+                <Button Content="Копия" Style="{StaticResource Btn.Ghost}" Padding="10,10" FontSize="12" Margin="3,0"
+                        Command="{Binding DuplicateCommand}" AutomationProperties.AutomationId="DuplicateProduct"/>
+                <Button Content="Удалить" Style="{StaticResource Btn.Danger}" Padding="10,10" FontSize="12" Margin="6,0,0,0"
+                        Command="{Binding DeleteCommand}" AutomationProperties.AutomationId="DeleteProduct"/>
+            </UniformGrid>
+        <Border Grid.Row="1" Style="{StaticResource Card}" Padding="0">
             <Grid>
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="30"
                             Visibility="{Binding Editor, Converter={StaticResource EmptyToCollapsed}, ConverterParameter=invert}">
@@ -191,5 +197,6 @@
                 </ScrollViewer>
             </Grid>
         </Border>
+        </Grid>
     </Grid>
 </UserControl>
